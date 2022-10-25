@@ -8,7 +8,10 @@ const handleErrorMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(error);
+  console.error(
+    `[APP] Ocorreu o seguinte erro em uma das requisições:\n`,
+    error
+  );
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       message: error.message,

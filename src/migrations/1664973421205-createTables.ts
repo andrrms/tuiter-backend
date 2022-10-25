@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class createFollowTable1663271454986 implements MigrationInterface {
-    name = 'createFollowTable1663271454986'
+export class createTables1664973421205 implements MigrationInterface {
+    name = 'createTables1664973421205'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "users_follows" ("createdAt" TIMESTAMP NOT NULL DEFAULT now(), "following_id" uuid NOT NULL, "follower_id" uuid NOT NULL, CONSTRAINT "PK_086bec4d38aeb4c3fcc3535323b" PRIMARY KEY ("following_id", "follower_id"))`);
+        await queryRunner.query(`CREATE TABLE "users_follows" ("created_at" TIMESTAMP NOT NULL DEFAULT now(), "following_id" uuid NOT NULL, "follower_id" uuid NOT NULL, CONSTRAINT "PK_086bec4d38aeb4c3fcc3535323b" PRIMARY KEY ("following_id", "follower_id"))`);
         await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, "username" character varying(24) NOT NULL, "email" character varying(80) NOT NULL, "password" character varying(160) NOT NULL, "biography" character varying(160), "localization" character varying(30), "site" character varying(100), "birth_date" date NOT NULL, "avatar_url" character varying(350), "is_active" boolean NOT NULL DEFAULT true, "authorization_level" integer NOT NULL DEFAULT '1', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "article_post" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "body" character varying(240) NOT NULL, "localization" character varying(30) NOT NULL, "author_id" uuid, "article_quote_id" uuid, "article_reply_id" uuid, CONSTRAINT "REL_9c392d7e0d6c3bcca20d3ce21f" UNIQUE ("author_id"), CONSTRAINT "REL_6edc67d6012c52a1f9c26bc891" UNIQUE ("article_quote_id"), CONSTRAINT "REL_db85f132e339b2b99a6e297ca0" UNIQUE ("article_reply_id"), CONSTRAINT "PK_ce5968affb8e27896e7ae244bd1" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "article_likes" ("created_at" TIMESTAMP NOT NULL DEFAULT now(), "user_id" uuid NOT NULL, "article_id" uuid NOT NULL, CONSTRAINT "PK_c972241ac936c238e2eedde44a8" PRIMARY KEY ("user_id", "article_id"))`);

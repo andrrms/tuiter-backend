@@ -15,6 +15,7 @@ const createFollowService = async (
       username: followingUsername,
     },
   });
+
   if (!targetUser)
     throw new AppError(
       "Você está tentando seguir um usuário que não existe",

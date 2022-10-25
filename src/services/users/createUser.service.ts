@@ -4,6 +4,7 @@ import AppDataSource from "../../data-source";
 import User from "../../entities/User.entity";
 import { AppError } from "../../errors/AppError";
 import { IUserRequest, IUserResponse } from "../../interfaces/user.interfaces";
+import requiredArgs from "../../utils/requiredArgs";
 
 const createUserService = async ({
   name,
@@ -13,6 +14,12 @@ const createUserService = async ({
   birth_date,
 }: IUserRequest): Promise<IUserResponse> => {
   const userRepo = AppDataSource.getRepository(User);
+  const missing = requiredArgs({ name, username, email, password, birth_date });
+
+  if (missing.length > 0)
+    throw new AppError(
+      `Está faltando os seguintes dados: ${missing.join(", ")}`
+    );
 
   const foundUser = await userRepo.findOne({
     where: [{ username }, { email }],

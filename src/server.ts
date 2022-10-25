@@ -13,7 +13,7 @@ function initServer() {
       });
     })
     .catch((err) => {
-      console.error("[DB] Erro ao iniciar o banco de dados", err);
+      console.error(`[DB] Erro ao iniciar o banco de dados`, err);
     });
 }
 
