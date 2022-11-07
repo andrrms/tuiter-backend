@@ -1,54 +1,15 @@
-- name: Contributors List
-  # You may pin to the exact commit or the version.
-  # uses: wow-actions/contributors-list@b9e91f91a51a55460fdcae64daad0cb8122cdd53
-  uses: wow-actions/contributors-list@v1.1.0
-  with:
-    # Your GitHub token for authentication.
-    GITHUB_TOKEN: 
-    # The repository name in form of "userName/repoName".
-    repo: # optional
-    # Specify if sort contributors by contributions or not. Default `true`.
-    sort: # optional, default is true
-    # Specify the max count of contributors listed. Default list all contributors.
-    count: # optional
-    # Specify if clip the avatar to rounded or not. Default `true`.
-    round: # optional, default is true
-    # Truncate username by specified length, `0` for no truncate.
-    truncate: # optional, default is 12
-    # Type of collaborators options: all/direct/outside.
-    affiliation: # optional, default is direct
-    # Should include bots or not.
-    includeBots: # optional
-    # Users to exclude.
-    excludeUsers: # optional
-    # Path to save the generated SVG.
-    svgPath: # optional, default is CONTRIBUTORS.svg
-    # Width of the generated SVG.
-    svgWidth: # optional, default is 740
-    # Size of user avatar.
-    avatarSize: # optional, default is 64
-    # Margin of user avatar.
-    avatarMargin: # optional, default is 5
-    # Height of user name.
-    userNameHeight: # optional, default is 0
-    # Template to render SVG.
-    svgTemplate: # optional, default is <svg
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  version="1.1"
-  width="{{ width }}"
-  height="{{ contributorsHeight }}"
->
-  <style>.contributor-link { cursor: pointer; }</style>
-  {{{ contributors }}}
-</svg>
-
-    # Template to render user item.
-    itemTemplate: # optional, default is <a xlink:href="{{{ url }}}" class="contributor-link" target="_blank" rel="nofollow sponsored" title="{{{ name }}}" id="{{{ name }}}">
-  <image x="{{ x }}" y="{{ y }}" width="{{ width }}" height="{{ height }}" xlink:href="{{{ avatar }}}" />
-</a>
-
-    # Commit message of the github action.
-    commitMessage: # optional, default is chore: update contributors [skip ci]
-    # Changes will not be committed. This options requires a local clone and will updated if required the contributor svg.
-    noCommit: # optional
+name: Contributors
+on:
+  schedule:
+    - cron: '0 1 * * 0' # At 01:00 on Sunday.
+  push:
+    branches:
+      - master
+jobs:
+  contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wow-actions/contributors-list@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          svgPath: CONTRIBUTORS.svg
