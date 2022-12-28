@@ -4,6 +4,7 @@ import AppDataSource from "../../data-source";
 import User from "../../entities/User.entity";
 import { AppError } from "../../errors/AppError";
 import { IUserRequest, IUserResponse } from "../../interfaces/user.interfaces";
+import { checkRequiredFields } from "../../utils";
 
 const createUserService = async ({
   name,
@@ -11,7 +12,21 @@ const createUserService = async ({
   email,
   password,
   birth_date,
+  avatar_url,
 }: IUserRequest): Promise<IUserResponse> => {
+  checkRequiredFields(
+    {
+      name,
+      username,
+      email,
+      password,
+      birth_date,
+    },
+    {
+      throwError: true,
+    }
+  );
+
   const userRepo = AppDataSource.getRepository(User);
 
   const foundUser = await userRepo.findOne({
@@ -32,7 +47,10 @@ const createUserService = async ({
     email,
     password: await hash(password, 10),
     birth_date,
-    biography: "E aí. Estou usando o Tuíter!",
+    biography: "E aí. Estou usando o Projeto X!",
+    avatar_url:
+      avatar_url ||
+      "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png",
   });
   const finalUser = await userRepo.save(user);
 

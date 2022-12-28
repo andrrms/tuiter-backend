@@ -3,7 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
+  ManyToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import User from "./User.entity";
 
@@ -15,18 +18,24 @@ export default class ArticlePost {
   @Column({ length: 240 })
   body: string;
 
-  @Column({ length: 30 })
-  localization: string;
+  @Column({ length: 30, nullable: true })
+  localization?: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.articles, { eager: true })
   @JoinColumn({ name: "author_id" })
-  author: string;
+  author: User;
 
-  @OneToOne(() => ArticlePost, { nullable: true, eager: true })
+  @OneToOne(() => ArticlePost, { nullable: true })
   @JoinColumn({ name: "article_quote_id" })
-  article_quote: string;
+  article_quote?: string;
 
   @OneToOne(() => ArticlePost, { nullable: true })
   @JoinColumn({ name: "article_reply_id" })
-  article_reply: string;
+  article_reply?: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

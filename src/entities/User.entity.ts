@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Exclude } from "class-transformer";
 import UserFollow from "./UserFollow.entity";
+import ArticlePost from "./ArticlePost.entity";
 
 @Entity("users")
 export default class User {
@@ -54,9 +55,12 @@ export default class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToMany(() => UserFollow, (follow) => follow.following)
+  @OneToMany(() => UserFollow, (follow) => follow.target)
   following: UserFollow[];
 
   @OneToMany(() => UserFollow, (follow) => follow.follower)
   followers: UserFollow[];
+
+  @OneToMany(() => ArticlePost, (post) => post.author)
+  articles: ArticlePost[];
 }

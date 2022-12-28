@@ -10,7 +10,7 @@ import { IUserLogin } from "../../interfaces/user.interfaces";
 const createSessionService = async ({
   login,
   password,
-}: IUserLogin): Promise<string> => {
+}: IUserLogin): Promise<{ accessToken: string; refreshToken: string }> => {
   const userRepo = AppDataSource.getRepository(User);
   const invalidLogin = new AppError("Invalid login or password", 401);
 
@@ -22,7 +22,7 @@ const createSessionService = async ({
   const passwordMatch = await compare(password, foundUser.password);
   if (!passwordMatch) throw invalidLogin;
 
-  const token = await jwt.sign(
+  const accessToken = jwt.sign(
     {
       username: foundUser.username,
       authorizationLevel: foundUser.authorization_level,
@@ -30,11 +30,17 @@ const createSessionService = async ({
     process.env.SECRET_KEY!,
     {
       subject: foundUser.id,
-      expiresIn: "2h",
+      expiresIn: "3m",
     }
   );
 
-  return token;
+  const refreshToken = jwt.sign(
+    { username: foundUser.username },
+    process.env.REFRESH_SECRET_KEY!,
+    { expiresIn: "1d" }
+  );
+
+  return { accessToken, refreshToken };
 };
 
 export default createSessionService;

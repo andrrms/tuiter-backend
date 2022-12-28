@@ -29,7 +29,7 @@ const removeFollowService = async (
 
   const alreadyFollowing = await followRepo
     .createQueryBuilder()
-    .where("UserFollow.follower.id = :id1 AND UserFollow.following.id = :id2", {
+    .where("UserFollow.follower.id = :id1 AND UserFollow.target.id = :id2", {
       id1: selfUser.id,
       id2: targetUser.id,
     })
@@ -39,7 +39,7 @@ const removeFollowService = async (
 
   const finalFollow = await followRepo.delete({
     follower: selfUser,
-    following: targetUser,
+    target: targetUser,
   });
   if (!finalFollow) throw new AppError("Algo deu errado", 500);
 

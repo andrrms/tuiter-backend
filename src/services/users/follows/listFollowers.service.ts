@@ -7,7 +7,7 @@ const listFollowersService = async (id: string): Promise<UserFollow[]> => {
 
   const followers = await followRepo
     .createQueryBuilder()
-    .where("UserFollow.following.id = :id", { id })
+    .where("UserFollow.target.id = :id", { id })
     .getMany();
 
   if (!followers) throw new AppError("Algo deu errado", 500);

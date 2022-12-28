@@ -29,3 +29,12 @@ export interface IUserLogin {
   login: string;
   password: string;
 }
+
+export interface IUserFeed {
+  name: string;
+  username: string;
+  biography: string;
+  avatar_url: string;
+  following_count: string;
+  follower_count: string;
+}
